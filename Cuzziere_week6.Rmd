@@ -1,0 +1,80 @@
+---
+title: "Cuzziere_week6"
+output: html_document
+date: "2023-07-10"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading ggplot2, palmerpenguins, and dplyr package using `library` function
+
+```{r library-funciton}
+library(ggplot2)
+library(palmerpenguins)
+library(dplyr)
+
+# Check structure
+dplyr::glimpse(palmerpenguins::penguins)
+```
+# NA sex
+
+```{r NA}
+peng_v2 <- penguins %>%
+  mutate(sex_actual = ifelse(test = is.na(sex), yes = "NA", no = as.character(sex)))
+```
+
+# Creating violin plot with sec on the x-axis and flipper length on the y-axis
+
+```{r making-1A-plot}
+# 1A Plot
+peng_plot <- ggplot(data = peng_v2, mapping = aes(x = sex, y = flipper_length_mm, fill = sex_actual))+
+  geom_violin()+
+  scale_fill_manual(values = c("female" = "#CC3D6C",
+                                "male" = "#6093D8",
+                                "NA" = "#CEB8D9"))
+
+# Check plot
+
+peng_plot
+```
+
+# Plot 1B
+
+```{r making-plot-1B}
+peng_graph <- peng_plot+
+  labs(x = "Sex", y = "Flipper Length (mm)")+
+  theme(panel.background = element_blank(), axis.line = element_line(color = "black"), legend.title = element_blank())+
+  facet_grid(. ~ species)
+```
+
+# Second Plot 2A/2B
+
+```{r 2A/2B}
+
+# Making second plot for problem 2A/2B
+peng_plot2 <- ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = island, fill = island))+
+  geom_violin()+
+  scale_fill_manual(values = c("Torgersen" = "#ACCDCA",
+                                "Dream" = "#FFBA08",
+                                "Biscoe" = "#FF7E66"))
+
+peng_plot2+
+  labs(x = "Flipper Length (mm)", y = "Flipper Length (mm)")+
+  theme(panel.background = element_blank(), axis.line = element_line(color = "black"), legend.title = element_blank())+
+  facet_grid(. ~ island)
+```
+
+# Install cowplot package
+```{r installing}
+#cowplot install, library function
+library(cowplot)
+```
+
+# Cowplot used to make the two graphs into one plot
+```{r cowplot}
+# putting both graphs into one plot (species by sex graph and species by island graph)
+cowplot :: plot_grid(peng_graph, peng_plot2, nrow = 1 )
+```
+
