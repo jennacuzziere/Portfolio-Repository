@@ -1,0 +1,86 @@
+---
+title: "Google Drive Function Tutorial Draft 1"
+output: html_document
+date: "2023-06-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Using googledrive Package
+
+Installing the googledrive package so that it can be used in this project.
+
+```{r Eval = FALSE}
+# Installing googledrive
+library(googledrive)
+```
+
+```{r, include = FALSE}
+# Authorization of gmail to be used in project
+drive_auth(email = "jcuzziere@gmail.com")
+```
+
+# `Drive_Create Function`
+
+## Arguments Include: 
+- "Name" = Naming New Files, Documents, Sheets, and Folders. 
+- "Path" = Targets Destination for New Item. 
+- "Type" = Creating New Files, Documents, Sheets, and Folders. 
+- "Overwrite" = Check for Pre-Exhisting File at the targeted filepath.
+
+Creating a **new** folder and a **new** spreadsheet within that folder using `drive_create` function. This new folder and spreadsheet will be used as examples for later functions.
+
+#### Function Example
+
+```{r Eval = FALSE}
+# Creating new folder ("exfolder") and new Google Sheet ("exsheet") within created folder
+exfolder <- drive_mkdir("exfolder/")
+drive_create("exsheet", path = exfolder, type = "spreadsheet")
+```
+
+# `As_Dribble Function`
+
+## Argument: 
+- "X" = A Vector of Drive file Paths, a Vector of File ids, a List of Files Resource Objects, or a Suitable Data Frame
+
+Use function `as_dribble` to convert a file into a "dribble". A dribble is an object used by googledrive to hold Drive file metadata. 
+
+#### Function Example
+
+```{r Eval = FALSE}
+# Making previously created folder into a dribble
+as_dribble(exfolder)
+```
+
+# `Drive_Find Function`
+
+## Arguments Include: 
+- "Pattern" = Only the Items Whose Names Match This Expression are Returned
+- "Trashed" = Whether to Search Files that are Not in the Trash (trashed = FALSE, the default), Only Files That are in the Trash (trashed = TRUE), or to Search Regardless of Trashed Status (trashed = NA). 
+- "N_Max" = Number of Items to be Found. 
+- "Shared_Drive" = Anything that Identifies One Specific Shared Drive. 
+- "Corpus" = Specifying Which Collections of Items to Search. 
+
+Can find Docs, Files, Folders, or Sheets in Drive using the `drive_find` function. Can filter search by looking at file type or file name. To get a more accurate search, use function `drive_get` to search by file path or by file id. 
+
+#### Function Examples
+
+```{r Eval = FALSE}
+# Searching by file type "spreadsheet"
+drive_find(type = "spreadsheet")
+```
+
+```{r Eval = FALSE}
+# Searching by content in name (folder previously created)
+drive_find(q = "name contains 'folder'")
+```
+```{r Eval = FALSE}
+drive_find(type = "folder", n_max = 1, trashed = TRUE)
+
+drive_find(type = "presentation", n_max = 2)
+
+drive_find(type = "document", n_max = 3)
+```
+
