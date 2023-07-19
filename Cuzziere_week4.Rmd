@@ -1,0 +1,82 @@
+---
+title: "Cuzziere_week4"
+output: html_document
+date: "2023-06-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load "dplyr" Package to Computer Using "library" Function and Read the Three Data Files and Check Structure
+
+```{r library-function}
+library(dplyr)
+tomato <- read.csv(file = "tomato.csv")
+tomatois <- read.csv(file = "tomato_issues.csv")
+treatment <- read.csv(file = "tomato_treatment.csv")
+dplyr::glimpse(tomato)
+dplyr::glimpse(tomatois)
+dplyr::glimpse(treatment)
+```
+
+# Full Join and Checking Structure
+
+```{r full-join}
+full <- dplyr::full_join(x = tomato, y = treatment)
+
+dplyr::glimpse(full)
+```
+
+# Filter Function, Join, and Check Structure
+
+```{r filter-join-check}
+tomato_v2 <- dplyr::filter(tomatois, problem != "herbivore damage")
+tomato_v3 <- dplyr::filter(tomato_v2, problem != "fungal infection")
+
+full2 <- dplyr::full_join(x = full, y = tomato_v3)
+
+dplyr::glimpse(full2)
+```
+
+# Loading "palmerpenguins" and Checking Structure
+
+```{r palmerpenguins}
+library(palmerpenguins)
+
+dplyr::glimpse(palmerpenguins::penguins)
+```
+
+"species" and "island" and the contents of these columns are not numerical, so I would classify these columns as categorical as categorical data does not have to be numerical. The columns "bill_length_mm", "bill_depth_mm", "flipper_length_mm", and "body_mass_g" can all have measurements that aren't whole numbers so these columns would be classified as continuous. The "sex" column does not contain numbers so this column would be categorical. The "year" column must only have whole numbers so this data would also be classified as categorical.
+
+# Testing if Flipper Length Varies Between Male and Female Penguins
+
+Result: Yes, the hypothesis is supported
+
+```{r ANOVA}
+peng_an <- aov(flipper_length_mm ~ sex, data = penguins)
+
+# examine this
+
+peng_an
+
+summary(peng_an)
+```
+
+# Testing to See if Penguins with a Higher Body Mass Have Bigger Flippers in Length
+
+Result: Yes, the hypothesis is supported
+
+```{r Regression}
+peng_reg <- lm(flipper_length_mm ~ body_mass_g, data = penguins)
+
+# examine this
+
+peng_reg
+
+summary(peng_reg)
+```
+
+
+
+
