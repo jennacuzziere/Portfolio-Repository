@@ -1,0 +1,60 @@
+---
+title: "Cuzziere_week5"
+output: html_document
+date: "2023-07-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Library function palmerpenguins
+
+```{r library}
+# download
+library(palmerpenguins)
+library(dplyr)
+
+# view data
+dplyr::glimpse(palmerpenguins::penguins)
+```
+
+# Explanation for which statistical test to use
+
+The most appropriate statistical test for the hypothesis is the two-way ANOVA test. The two columns being looked at is sex and species. These columns do not contain numerical data so both categories are therefore categorical. The other category being tested is flipper length and this data does not have to be measured in whole numbers. The use of decimals in collecting data rather than using whole numbers shows indication for continuous data. Flipper length can be measured with decimals so this column shows continuous data. With this in mind, a ANOVA test would be the most useful to discovering if the hypothesis is supported or not.
+
+# Testing the hypothesis using a ANOVA test
+
+```{r ANOVA}
+# removing penguins that don't have a recorded sex
+peng_aov <- penguins %>%
+  dplyr::filter(is.na(sex) != TRUE)
+
+# ANOVA testing
+peng_aov <-aov(flipper_length_mm ~ sex * species, data = penguins)
+
+# check summary
+summary(peng_aov)
+```
+
+# Is the hypothesis supported?
+
+yes, the hypothesis is supported. The p-value is 0.00631 and this number is less than 0.05. With this information, we can therefore say that the null hypothesis is rejected.
+
+# Models for sex, species, island
+
+```{r problem-2}
+# fit models
+peng_ssi <- aov(flipper_length_mm ~ sex * species + island, data = penguins)
+peng_issi <- aov(flipper_length_mm ~ sex * species * island, data = penguins)
+```
+
+# AIC function 
+
+```{r}
+# comparing the two models using the AIC function
+AIC(peng_aov, peng_ssi, peng_issi)
+```
+# Which model has the most explanatory power?
+
+The model with the lowest AIC points is "peng_ssi" and is therefore the most explanatory power. The "peng_aov" and "peng_issi" are very close in number to the "peng_ssi" value so they are all comparable, but "peng_ssi" is lower, so it has the most explanatory power. 
