@@ -1,0 +1,74 @@
+---
+title: "Cuzziere_week7"
+output: html_document
+date: "2023-07-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Creating an object with the number 35 and converting this number to celsius
+```{r 1A}
+# Creating object 
+temp <- 35
+
+# Conversion
+(temp - 32)*5/9
+```
+
+# Creating a loop C -> F
+```{r 1B}
+# Creating new object
+temp2 <- c(35, 45, 55, 65, 75, 85, 95)
+
+# loop across it
+for(value in temp2){
+  
+  # print/paste
+  convert.temp2 <- (temp2 - 32)*5/9
+  
+  print(paste(temp2, "converted to Fahrenheit is", convert.temp2))
+}
+```
+
+# 1C 
+```{r 1C}
+# object
+temp2 <- c(35, 45, 55, 65, 75, 85, 95)
+
+# Adding Conditonals
+for (R in temp2){
+  celsius <- (R-32)*(5/9)
+  
+  if (celsius == 18 | celsius < 18){
+    print(paste("Temperature equals", R, "so plan on bringing a jacket!"))
+  }
+  
+  else{
+    print(paste("Temperature equals", R, "so you don't need to bring a jacket!"))
+  }
+}
+```
+
+#1D
+```{r 1D}
+temp2 <- c(35, 45, 55, 65, 75, 85, 95)
+
+for (E in temp2) {
+  celsius <- (E-32)*(5/9)
+  
+  if (E<18){
+    print(paste("Temperature equals", E, "so you should bring a jacket!"))
+  }
+  
+  if (E == 23 | E> 23){
+    print(paste("Temperature equals", E, "so you should pack shorts!"))
+  }
+  
+  if(E>18 | E<23){
+    print(paste("Temperature equals", E, "so you don't need a jacket or shorts!"))
+  }
+}
+```
+
